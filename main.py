@@ -8,7 +8,7 @@ if __name__ == "__main__":
 
     WIDTH = 100
     HEIGHT = 100
-    ITERATIONS = 300
+    ITERATIONS = 100
     ANIMATION = True
 
     edges = [
@@ -21,6 +21,11 @@ if __name__ == "__main__":
         Edge(u=1, v=5),
         Edge(u=2, v=6),
         Edge(u=3, v=7),
+
+        Edge(u=4, v=5),
+        Edge(u=5, v=6),
+        Edge(u=6, v=7),
+        Edge(u=7, v=4),
     ]
 
     vertices = []
