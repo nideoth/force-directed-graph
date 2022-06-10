@@ -1,10 +1,15 @@
-import networkx as nx
-import matplotlib.pyplot as plt
+from random import randint
 
-from algorithm import Edge, algorithm
+from algorithm import Vector, Vertex, Edge
+from display import display_animated, display_final
 
 
 if __name__ == "__main__":
+
+    WIDTH = 100
+    HEIGHT = 100
+    ITERATIONS = 300
+    ANIMATION = True
 
     edges = [
         Edge(u=0, v=1),
@@ -12,24 +17,18 @@ if __name__ == "__main__":
         Edge(u=2, v=3),
         Edge(u=3, v=0),
 
-        Edge(u=0, v=2),
-        Edge(u=1, v=3),
+        Edge(u=0, v=4),
+        Edge(u=1, v=5),
+        Edge(u=2, v=6),
+        Edge(u=3, v=7),
     ]
 
-    result = algorithm(edges, 4, 100)
+    vertices = []
+    for _ in range(8):
+        vertices.append(Vertex(Vector(randint(-WIDTH//2, WIDTH//2), randint(-HEIGHT//2, HEIGHT//2))))
 
-    for i in result:
-        print(i.pos.x, i.pos.y)
 
-    graph = nx.Graph()
-
-    # Add nodes
-    for i, node in enumerate(result):
-        graph.add_node(i, pos=(node.pos.x, node.pos.y))
-
-    # Add edges
-    for edge in edges:
-        graph.add_edge(edge.u, edge.v)
-    
-    nx.draw(graph, nx.get_node_attributes(graph, 'pos'), with_labels=True)
-    plt.show()
+    if ANIMATION:
+        display_animated(vertices, edges, ITERATIONS, WIDTH, HEIGHT)
+    else:
+        display_final(vertices, edges, ITERATIONS, WIDTH, HEIGHT)

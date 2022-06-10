@@ -1,5 +1,5 @@
+import copy
 from math import sqrt
-from random import randint
 
 
 class Vector:
@@ -32,21 +32,15 @@ class Edge:
     def __init__(self, v: int, u: int):
         self.v = v
         self.u = u
-        
-
-WIDTH = 100
-HEIGHT = 100
-AREA = WIDTH * HEIGHT
-INIT_TEMP = WIDTH // 10
 
 
-def algorithm(edges: list[Edge], vertices_count: int, iterations: int) -> list[Vertex]:
+def algorithm_frames(vertices: list[Vertex], edges: list[Edge], iterations: int, width: int, height: int) -> list[list[Vertex]]:
 
-    # Vertices are assigned random initial positions
-    vertices = []
-    for _ in range(vertices_count):
-        vertices.append(Vertex(Vector(randint(-WIDTH//2, WIDTH//2), randint(-HEIGHT//2, HEIGHT//2))))
+    frames = []
 
+    AREA = width * height
+    INIT_TEMP = width // 10
+    
     K = sqrt(AREA / len(vertices))
 
     def fa(x: float) -> float:
@@ -79,10 +73,12 @@ def algorithm(edges: list[Edge], vertices_count: int, iterations: int) -> list[V
         for v in vertices:
             if abs(v.disp) != 0:
                 v.pos += ((v.disp/abs(v.disp)) * min(abs(v.disp), temperature))
-            v.pos.x = min(WIDTH//2, max(-WIDTH/2, v.pos.x))
-            v.pos.y = min(HEIGHT//2, max(-HEIGHT/2, v.pos.y))
+            v.pos.x = min(width//2, max(-width/2, v.pos.x))
+            v.pos.y = min(height//2, max(-height/2, v.pos.y))
 
         # Decay temperature to 0 in an inverse linear fashion
         temperature -= (INIT_TEMP / iterations)
 
-    return vertices
+        frames.append(copy.deepcopy(vertices))
+
+    return frames
