@@ -1,4 +1,5 @@
 from random import randint
+import sys
 
 from algorithm import Vector, Vertex, Edge
 from display import display_animated, display_final
@@ -8,32 +9,34 @@ if __name__ == "__main__":
 
     WIDTH = 100
     HEIGHT = 100
-    ITERATIONS = 100
     ANIMATION = True
 
-    edges = [
-        Edge(u=0, v=1),
-        Edge(u=1, v=2),
-        Edge(u=2, v=3),
-        Edge(u=3, v=0),
+    if len(sys.argv) >= 3:
+        file = sys.argv[1]
+        number_of_iterations = int(sys.argv[2])
+    else:
+        print("Bad arguments")
+        exit()
 
-        Edge(u=0, v=4),
-        Edge(u=1, v=5),
-        Edge(u=2, v=6),
-        Edge(u=3, v=7),
-
-        Edge(u=4, v=5),
-        Edge(u=5, v=6),
-        Edge(u=6, v=7),
-        Edge(u=7, v=4),
-    ]
+    file = open(file, "r")
+    edges_list = []
+    max_value = 0
+    for line in file:
+        stripped_line = line.strip()
+        coordinates = stripped_line.split()
+        u = int(coordinates[0])
+        v = int(coordinates[1])
+        edges_list.append(Edge(u, v))
+        if max_value < max(u, v):
+            max_value = max(u, v)
+    file.close()
 
     vertices = []
-    for _ in range(8):
+    for _ in range(max_value+1):
         vertices.append(Vertex(Vector(randint(-WIDTH//2, WIDTH//2), randint(-HEIGHT//2, HEIGHT//2))))
 
 
     if ANIMATION:
-        display_animated(vertices, edges, ITERATIONS, WIDTH, HEIGHT)
+        display_animated(vertices, edges_list, number_of_iterations, WIDTH, HEIGHT)
     else:
-        display_final(vertices, edges, ITERATIONS, WIDTH, HEIGHT)
+        display_final(vertices, edges_list, number_of_iterations, WIDTH, HEIGHT)
